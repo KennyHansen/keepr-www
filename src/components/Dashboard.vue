@@ -2,22 +2,29 @@
   <div class="dashboard container">
 
     <router-link to="/">Back</router-link>
-
     <h2>My Vaults</h2>
+    <div class="carousel">
+      <a class="carousel-item" v-for="(vault, index) in myVaults">
+        <img src="../assets/vault.gif">
+        <router-link :to="{ path: '/vaults/' + vault._id }">
+          {{vault.name}}
+        </router-link>
+      </a>
+    </div>
+  <!--
     <div class="row">
       <ul class="collapsible popout" data-collapsible="accordion" v-for="vault in myVaults">
           <li>
-            <router-link :to="{ path: '/vaults/' + vault._id }"><img src="../assets/vault.gif" width="150"></router-link>
             <div class="collapsible-header">{{vault.name}}</div>
             <div class="collapsible-body"><span>{{vault.description}}</span></div>
           </li>
       </ul>
     </div>
-
+-->
     <form class="card" @submit.prevent="createVault">
-      <input type="text" v-model="name" placeholder="Name"></input>
-      <input type="text" v-model="description" placeholder="Description"></input>
-      <input type="text" v-model="imageUrl" placeholder="Image"></input>
+      <input required="true" type="text" v-model="newVault.name" placeholder="Name"></input>
+      <input type="text" v-model="newVault.description" placeholder="Description"></input>
+      <input type="text" v-model="newVault.imageUrl" placeholder="Image"></input>
       <button type="submit">Add Vault</button>
     </form>
 
@@ -27,11 +34,11 @@
     </div>
 
     <form class="card" @submit.prevent="createKeep">
-      <input type="text" v-model="title" placeholder="Title"></input>
-      <input type="text" v-model="body" placeholder="Body"></input>
-      <input type="text" v-model="k_imageUrl" placeholder="Image"></input>
-      <input type="text" v-model="articleLink" placeholder="Article link"></input>
-      <input type="checkbox" id="checkbox" v-model="isPublic">
+      <input required="true" type="text" v-model="newKeep.title" placeholder="Title"></input>
+      <input required="true" type="text" v-model="newKeep.body" placeholder="Body"></input>
+      <input type="text" v-model="newKeep.imageUrl" placeholder="Image"></input>
+      <input type="text" v-model="newKeep.articleLink" placeholder="Article link"></input>
+      <input type="checkbox" id="checkbox" v-model="newKeep.isPublic">
       <label for="checkbox">Make Public</label>
       <hr>
       <button type="submit">Add Keep</button>
@@ -46,18 +53,12 @@ export default {
   name: 'Dashboard',
   data () {
     return {
-        name: '',
-        description: '',
-        imageUrl: '',
-        title: '',
-        k_imageUrl: '',
-        body: '',
-        articleLink: '',
-        isPublic: false
+      newVault: {},
+      newKeep: {}
     }
   },
   mounted() {
-    this.$root.$data.store.actions.getDashboard()
+    this.$root.$data.store.actions.getDashboard(this.carouselVaults)
   },
   computed: {
       myVaults() {
@@ -68,11 +69,14 @@ export default {
       }
   },
   methods: {
+    carouselVaults() {
+       $('.carousel').carousel();
+    },
     createVault() {
-      
+      this.$root.$data.store.actions.createVault(this.newVault)
     },
     createKeep() {
-
+      this.$root.$data.store.actions.createVault(this.newKeep)
     }
   }
 }

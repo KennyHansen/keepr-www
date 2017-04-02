@@ -1,19 +1,33 @@
 <template>
   <nav class="Navbar black white-text">
+
+  <ul class="left">
+    <li><img src="../assets/logo.jpg" height="64px"></li>
+  </ul>
   
   <div v-if="loading == true">
-    <p>Loading</p>
+    <ul class="right">
+      <li>Loading...</li>
+    </ul>
   </div>
 
   <div v-else>
     <div v-if="user.name">
-        Welcome, {{user.name}}!
-        <a class="blue-text" href="#" @click="logout">Logout</a>
+      <ul class="right">
+        <li class="blue-text" active-class="active" @click="logout"><router-link to='/'>Logout</router-link></li>
+      </ul>
+      <ul class="right">
+        <li>Welcome, {{user.name}}!</li>
+      </ul>
     </div>
-    <ul v-else>
-       <li><router-link to="login">Login</router-link></li>
-       <li><router-link to="register">Register</router-link></li>
-    </ul>
+    <div v-else>
+      <ul class="right" @click="loginModal">
+        <li><router-link class="tab" active-class="active" :to="{name:'Auth.register'}">Register</router-link></li>
+      </ul>
+      <ul class="right" @click="registerModal">
+        <li><router-link class="tab" active-class="active" :to="{name:'Auth.login'}">Login</router-link></li>
+      </ul>
+    </div>
   </div>
 
 
@@ -36,6 +50,14 @@ export default {
       }
   }, 
   methods: {
+      loginModal() {
+          $('.modal').modal();
+          $('#loginModal').modal('open');
+      },
+      registerModal() {
+          $('.modal').modal();
+          $('#registerModal').modal('open');
+      },
       logout() {
         this.$root.store.actions.logout()
       }

@@ -1,21 +1,25 @@
 <template>
   <div class="login">
-    <h1>Login</h1>
-    <router-link to="/">Back</router-link></li>
-    <div class="container">
-        <div class="card">
-            <form @submit.prevent="loginUser">
-                <input type="email" v-model="email" placeholder="Email"></input>
-                <input type="password" v-model="password" placeholder="Password"></input>
-                <button class="btn btn-primary" type="submit">Login</button>
-            </form>
+    <form @submit.prevent="loginUser" id="loginModal" class="modal">
+        <a href="#" @click="cancelLogin">Back</a>
+        <div class="modal-content">
+            <div class="input-field">
+                <input required="true" type="email" v-model="email" placeholder="Email"></input>
+            </div>
+            <div class="input-field">
+                <input required="true" type="password" v-model="password" placeholder="Password"></input>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-action waves-effect waves-blue btn" type="submit">Login</button>
+            </div>
         </div>
-    </div>
+    </form>
     <hr>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   name: 'login',
   data () {
@@ -24,9 +28,18 @@ export default {
         password: ''
     }
   },
+  mounted() {
+    $('.modal').modal();
+    $('#loginModal').modal('open');
+  },
   methods: {
+      cancelLogin() {
+          $('#loginModal').modal('close');
+          this.$router.push({path: '/'})
+      },
       loginUser() {
           if(this.email && this.password) {
+            $('#loginModal').modal('close');
             this.$root.store.actions.login(this.email, this.password)
             this.password = ''
             this.email = ''
@@ -35,8 +48,13 @@ export default {
       }
   }
 }
+Vue.nextTick(() => {
+    $('.modal').modal();
+    $('#loginModal').modal('open');
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

@@ -4,26 +4,40 @@
     <router-link to="/">Back</router-link>
     <!-- 
     
-        Display vaults on side with link to them, click & drag keeps to vaults to add them, 
-        then toast a message to the user. 
     
-    -->
-    <div v-for="vault in vaults" droppable="true" draggable="false" v-on:drop="addToVault(vault)" ondragover="event.preventDefault()" >
+    <div v-for="vault in vaults"  ondragover="event.preventDefault()" >
         <router-link :to="{ path: '/vaults/' + vault._id }"><img src="../assets/vault.gif" height="70"></router-link>
         {{vault.name}}
     </div>
+    -->
 
-    <div v-for="keep in keeps" draggable="true" v-on:dragstart="selectKeep(keep)">
-        <div class="card" v-on:dragend="moveKeep">
-            <div class="card-head grey lighten-4">
-                <p v-show="keep.author">{{keep.author}}</p>
-            </div>
-            <div class="card-body">
-                <p v-show="keep.body">{{keep.body}}</p>
-            </div>
-            <div class="card-title">
-                <p v-show="keep.title">{{keep.title}}</p>
-                <img :src="keep.imgUrl"></img>
+    <div class="carousel">
+      <a class="carousel-item" v-for="vault in myVaults" 
+      ondragover="event.preventDefault()" 
+      droppable="true" 
+      draggable="false" 
+      v-on:drop="addToVault(vault)">
+        <img src="../assets/vault.gif">
+        <router-link :to="{ path: '/vaults/' + vault._id }">
+          {{vault.name}}
+        </router-link>
+      </a>
+    </div>
+    <div class="row">
+      <div class="col s4" v-for="keep in keeps">
+            <div draggable="true" v-on:dragstart="selectKeep(keep)">
+                <div class="card" v-on:dragend="moveKeep">
+                    <div class="card-head grey lighten-4">
+                        <p v-show="keep.author">{{keep.author}}</p>
+                    </div>
+                    <div class="card-body">
+                        <p v-show="keep.body">{{keep.body}}</p>
+                    </div>
+                    <div class="card-title">
+                        <p v-show="keep.title">{{keep.title}}</p>
+                        <img :src="keep.imgUrl"></img>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -44,18 +58,19 @@ export default {
         isPublic: true,
         tags: '',
         selectedKeep: {},
-        selectedVault: {}
+        selectedVault: {},
+        loading: true
     }
   },
   mounted() {
       this.$root.$data.store.actions.getKeeps()
-      this.$root.$data.store.actions.getDashboard()
+      this.$root.$data.store.actions.getDashboard(this.carouselVaults)
   },
   computed: {
       keeps() {
           return this.$root.$data.store.state.keeps
       },
-      vaults() {
+      myVaults() {
           return this.$root.$data.store.state.myVaults
       },
       user() {
@@ -63,6 +78,9 @@ export default {
       }
   },
   methods: {
+      carouselVaults() {
+        $('.carousel').carousel();
+      },
       createKeep() {
         this.$root.$data.store.actions.createKeep(this.title, this.author, this.imageUrl, this.articleLink, this.isPublic, this.tags)
       },

@@ -2,7 +2,7 @@
   <nav class="Navbar black white-text">
 
   <ul class="left">
-    <li><img src="../assets/logo.jpg" height="64px"></li>
+    <li><img src="/static/img/logo.acba0ca.jpg" height="64px"></li>
   </ul>
   
   <div v-if="loading == true">

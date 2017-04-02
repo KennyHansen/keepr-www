@@ -5,7 +5,7 @@
     <h2>My Vaults</h2>
     <div class="carousel">
       <a class="carousel-item" v-for="(vault, index) in myVaults">
-        <img src="../assets/vault.gif">
+        <img src="/static/img/vault.ea528c8.gif">
         <router-link :to="{ path: '/vaults/' + vault._id }">
           {{vault.name}}
         </router-link>

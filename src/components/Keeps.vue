@@ -17,7 +17,7 @@
       droppable="true" 
       draggable="false" 
       v-on:drop="addToVault(vault)">
-        <img src="../assets/vault.gif">
+        <img src="/static/img/vault.ea528c8.gif">
         <router-link :to="{ path: '/vaults/' + vault._id }">
           {{vault.name}}
         </router-link>

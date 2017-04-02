@@ -76,7 +76,7 @@ export default {
       this.$root.$data.store.actions.createVault(this.newVault)
     },
     createKeep() {
-      this.$root.$data.store.actions.createVault(this.newKeep)
+      this.$root.$data.store.actions.createKeep(this.newKeep)
     }
   }
 }

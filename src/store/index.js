@@ -90,24 +90,18 @@ export default {
                 setTimeout(cb, 500)
             }).catch(handleError)
         },
-        createKeep(title, author, imageUrl, articleLink, isPublic, tags) {
+        createKeep(keep) {
             console.log("alrighty then")
-            let keep = {
-                title,
-                author,
-                imageUrl,
-                articleLink,
-                isPublic,
-                tags
-            }
             api.post('/keeps', keep).then(res => {
-                console.log(res.data)
+                state.myKeeps.push(res.data.data)
+                Materialize.toast(`Added new keep!`, 5000)
             }).catch(handleError)
         },
         // only in dashboard
         removeKeep(keepId) {
             api.delete('/keeps/' + keepId).then(res => {
                 console.log(res.data)
+                Materialize.toast(`Removed keep`, 5000)
             }).catch(handleError)
         },
         // Extra
@@ -121,19 +115,17 @@ export default {
                 console.log(res.data)
             }).catch(handleError)
         },
-        createVault(name, description, imageUrl) {
-            let vault = {
-                name,
-                description,
-                imageUrl
-            }
+        createVault(vault) {
             api.post('/vaults', vault).then(res => {
                 console.log(res.data)
+                Materialize.toast(`Created new vault!`, 5000)
+                state.myVaults.push(res.data.data)
             }).catch(handleError)
         },
         removeVault(vaultId) {
             api.delete('/vaults/' + vaultId).then(res => {
                 console.log(res.data)
+                Materialize.toast(`Removed vault`, 5000)
             }).catch(handleError)
         },
         addKeepToVault(keep, vault) {
